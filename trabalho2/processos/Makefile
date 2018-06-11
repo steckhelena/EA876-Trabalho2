@@ -1,5 +1,5 @@
 main:
-	gcc -omain mainnova.c imageprocessing.c -I./ -lfreeimage -lpthread
+	gcc -omain main.c imageprocessing.c -I./ -lfreeimage -lpthread
 
 run:
 	./main

@@ -102,7 +102,7 @@ int main() {
 	 2,4,2,
 	 1,2,1};
 
-	imagem imgIn = abrir_imagem("images/teste2.jpg");
+	imagem imgIn = abrir_imagem("images/teste.jpg");
 
 	imagem *imgOut = malloc(sizeof(imagem));
 	imgOut->width = imgIn.width;
@@ -114,10 +114,10 @@ int main() {
 	workerArgs *args = malloc(sizeof(workerArgs));
 	args->imgIn = &imgIn;
 	args->imgOut = imgOut;
-	args->matrix = blur;
-	args->m = 3;
-	args->n = 3;
-	args->divisor=9;
+	args->matrix = blur5x5;
+	args->m = 5;
+	args->n = 5;
+	args->divisor=25;
 	args->current_line = malloc(sizeof(unsigned int));
 	*args->current_line = 0;
 	args->lock = malloc(sizeof(pthread_mutex_t));
@@ -131,7 +131,7 @@ int main() {
 		pthread_join(tid[i], NULL);
 	}
 
-	salvar_imagem("noite.jpg", imgOut);
+	salvar_imagem("filtros/teste.jpg", imgOut);
 	liberar_imagem(&imgIn);
 	liberar_imagem(imgOut);
 	free(imgOut);
