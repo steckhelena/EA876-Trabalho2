@@ -1,7 +1,6 @@
 main:
 	gcc -omain main.c imageprocessing.c -I./ -lfreeimage -lpthread
-
-run:
+execute:
 	./main
-clean:
+run: main execute
 	rm main
