@@ -81,10 +81,8 @@ void *worker(void *arg) {
 
 int main() {
 
-	double time_begin, time_end, acumulator;
-	for (int i = 0; i < LOOPS; ++i)
-	{
-	time_begin = time(NULL);
+	double time_begin, time_end, time_size;
+	
 	int blur[9] = 
 	{1,1,1,
 	 1,1,1,
@@ -124,21 +122,20 @@ int main() {
 	pthread_mutex_init(args->lock, NULL);
 	
 	pthread_t tid[MAX_THREADS];
+	time_begin = time(NULL);
 	for (int i=0; i<MAX_THREADS; i++) {
 		pthread_create(&tid[i], NULL, worker, (void*)args);
 	}
 	for (int i=0; i<MAX_THREADS; i++) {
 		pthread_join(tid[i], NULL);
 	}
-
+	time_end = time(NULL);
 	salvar_imagem("filtros/teste.jpg", imgOut);
 	liberar_imagem(&imgIn);
 	liberar_imagem(imgOut);
 	free(imgOut);
-	time_end = time(NULL);
-	acumulator += difftime(time_end, time_begin);
-	}
-	acumulator = acumulator/LOOPS;
-	printf("%f\n", acumulator);
+	
+	time_size = difftime(time_end, time_begin);
+	printf("%f\n", time_size);
 	return 0;
 }

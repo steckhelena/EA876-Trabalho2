@@ -70,7 +70,6 @@ void process(imagem *imgIn, imagem *imgOut, int line, int* blur){
 
   int line_local;
   do{
-    printf("Linhas\n");
     pthread_mutex_lock(&data->mutex);
     line_local = line;
     line++;
@@ -86,7 +85,8 @@ void process(imagem *imgIn, imagem *imgOut, int line, int* blur){
 
 int main() {
 
-	double time_begin, time_end, acumulator;
+	double time_begin, time_end, time_size;
+
   int blur[9] = 
   {1,1,1,
    1,1,1,
@@ -137,13 +137,15 @@ int main() {
 
 	while(wait(NULL) > 0);
   time_end = time(NULL);
+  time_size = difftime(time_begin, time_end);
 
-  salvar_imagem("teste1.jpg", imgOut);
+  salvar_imagem("filtros/teste1.jpg", imgOut);
   clear(&imgIn, imgOut);
-	printf("%f\n", difftime(time_end, time_begin));
+	printf("%f\n", time_size);
   return 0;
 }
 
+//Liberar Memoria
 void clear(imagem* I, imagem* O){
 	munmap(I->r, sizeof(float));
 	munmap(I->g, sizeof(float));
@@ -153,4 +155,5 @@ void clear(imagem* I, imagem* O){
   munmap(O->b, sizeof(float));
   munmap(I, sizeof(imagem));
   munmap(O, sizeof(imagem));
+  munmap(data, sizeof(shared_data));
 }
