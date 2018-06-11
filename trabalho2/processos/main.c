@@ -13,8 +13,6 @@
 #include <assert.h>
 
 #define MAX_PROCESSOS 4
-#define NORMALIZADOR 20
-#define LOOPS 1
 
 typedef struct
 {
@@ -26,6 +24,7 @@ static shared_data* data = NULL;
 
 void clear(imagem* I, imagem* O);
 
+//APLICACAO DA CONVOLUCAO
 void applyConvolution(imagem* imgIn, imagem* imgOut, int line, int *matrix, int m, int n, int divisor) {
   for (int i=0; i<imgIn->width; i++) {
     float auxR = 0;
@@ -66,6 +65,7 @@ void applyConvolution(imagem* imgIn, imagem* imgOut, int line, int *matrix, int 
   }
 }
 
+//CRIACAO DOS PROCESSOS
 void process(imagem *imgIn, imagem *imgOut, int line, int* blur){
 
   int line_local;
@@ -110,10 +110,11 @@ int main() {
   pid_t filho[4];
   imagem imgIn = abrir_imagem("images/teste1.jpg");
 
- //MEMORIA COMPARTILHADA
+  //MEMORIA COMPARTILHADA
   data = mmap(NULL, sizeof(shared_data), protection, visibility, -1, 0);
   data->done = false;
 
+  //INICIALIZANDO MUTEX
   pthread_mutexattr_t attr;
   pthread_mutexattr_init(&attr);
   pthread_mutexattr_setpshared(&attr, PTHREAD_PROCESS_SHARED);
